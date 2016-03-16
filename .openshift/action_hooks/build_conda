@@ -1,0 +1,29 @@
+#!/bin/bash
+set -e
+
+source ${OPENSHIFT_REPO_DIR}/misc/openshift/config
+source ${OPENSHIFT_REPO_DIR}/misc/openshift/func
+
+function install_conda() {
+    msg_info "Installing latest Anaconda(Miniconda)..."
+    pushd $OPENSHIFT_TMP_DIR
+    wget https://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh
+
+    bash Miniconda-latest-Linux-x86_64.sh -b -p ${CONDA_DIR}
+    rm Miniconda-latest-Linux-x86_64.sh
+    popd
+
+    check_status $? "Installing latest Anaconda(Miniconda)..."
+}
+
+function check_conda() {
+    msg_info "Checking for anaconda..."
+    if [ -d ${CONDA_DIR} ]; then
+        msg_success "Checking for anaconda... already installed."
+        return
+    fi
+
+    install_conda
+    export PATH=${CONDA_DIR}/bin:$PATH
+}
+

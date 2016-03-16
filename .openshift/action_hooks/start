@@ -1,0 +1,13 @@
+#!/bin/bash
+set -e
+
+source ${OPENSHIFT_REPO_DIR}/misc/openshift/config
+export PATH=${CONDA_DIR}/bin:$PATH
+
+export LANG='en_US.UTF-8'
+export LC_ALL='en_US.UTF-8'
+export LC_LANG='en_US.UTF-8'
+
+nohup ${NGINX_DIR}/sbin/nginx -c ${NGINX_DIR}/conf/nginx.conf > ${OPENSHIFT_DIY_LOG_DIR}/server.log 2>&1 &
+nohup ${CONDA_DIR}/bin/python ${OPENSHIFT_REPO_DIR}/www/app.py > ${OPENSHIFT_DIY_LOG_DIR}/app.log 2>&1 &
+

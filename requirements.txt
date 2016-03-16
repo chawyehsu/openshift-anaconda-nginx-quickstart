@@ -1,0 +1,6 @@
+gevent
+bosonnlp
+jieba
+Flask
+Flask-Bootstrap
+Flask-WTF

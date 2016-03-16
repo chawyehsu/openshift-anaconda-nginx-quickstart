@@ -1,0 +1,22 @@
+#!/bin/bash
+set -e
+
+# Try to guess the number of processors from /proc/cpuinfo.
+if [ -f /proc/cpuinfo ]; then
+    NUMBER_OF_PROCESSORS=$(grep -c ^processor /proc/cpuinfo)
+else
+    NUMBER_OF_PROCESSORS=1
+fi
+
+# Load functions
+source ${OPENSHIFT_REPO_DIR}/.openshift/action_hooks/build_conda
+source ${OPENSHIFT_REPO_DIR}/.openshift/action_hooks/build_requirements
+source ${OPENSHIFT_REPO_DIR}/.openshift/action_hooks/build_nginx
+
+# Check Anaconda(Miniconda)
+check_conda
+# Check requirements
+check_requirements
+# Check ngxin
+check_nginx
+

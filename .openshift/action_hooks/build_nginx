@@ -1,0 +1,41 @@
+#!/bin/bash
+set -e
+
+source ${OPENSHIFT_REPO_DIR}/misc/openshift/config
+source ${OPENSHIFT_REPO_DIR}/misc/openshift/func
+
+function install_nginx() {
+    msg_info "Installing nginx ${NGINX_VERSION}..."
+    pushd ${OPENSHIFT_TMP_DIR}
+    
+    wget ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-${NGINX_PCRE_VERSION}.tar.bz2
+    check_status $? "Download pcre..."
+
+    wget http://zlib.net/zlib-${NGINX_ZLIB_VERSION}.tar.gz
+    check_status $? "Download zlib..."
+
+    wget http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz
+    check_status $? "Download nginx..."
+
+    tar jxf pcre-${NGINX_PCRE_VERSION}.tar.bz2
+    tar zxf zlib-${NGINX_ZLIB_VERSION}.tar.gz
+    tar zxf nginx-${NGINX_VERSION}.tar.gz
+
+    cd nginx-${NGINX_VERSION}
+    ./configure --with-zlib=../zlib-$NGINX_ZLIB_VERSION --with-pcre=../pcre-$NGINX_PCRE_VERSION --prefix=$NGINX_DIR
+    make install -j$NUMBER_OF_PROCESSORS
+    popd
+
+    check_status $? "Installing nginx $NGINX_VERSION..."
+}
+
+function check_nginx() {
+    msg_info "Checking for nginx..."
+    if [ -d ${NGINX_DIR} ]; then
+        msg_success "Checking for nginx... already installed."
+        return
+    fi
+
+    install_nginx
+}
+

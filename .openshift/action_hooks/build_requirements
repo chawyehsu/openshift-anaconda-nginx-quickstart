@@ -1,0 +1,26 @@
+#!/bin/bash
+set -e
+
+source ${OPENSHIFT_REPO_DIR}/misc/openshift/config
+source ${OPENSHIFT_REPO_DIR}/misc/openshift/func
+
+function install_requirements() {
+    msg_info "Installling conda/pip requirements..."
+    export PATH=${CONDA_DIR}/bin:$PATH
+    conda install \
+        --yes --file ${OPENSHIFT_REPO_DIR}conda-spec.txt
+
+    pip install -r ${OPENSHIFT_REPO_DIR}/requirements.txt
+
+    check_status $? "Installling codna/pip requirements..."
+}
+
+function check_requirements() {
+    msg_info "Checking for conda/pip requirements..."
+    if [ ! -z $(pip freeze | grep `tail -1 ${REQUIREMENTS_FILE}`) ]; then
+        msg_success "Checking for conda/pip requirements... already installed."
+        return
+    fi
+
+    install_requirements
+}
