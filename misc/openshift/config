@@ -24,4 +24,3 @@ export NGINX_DIR
 
 REQUIREMENTS_FILE="${OPENSHIFT_REPO_DIR}/requirements.txt"
 CONFIG_TPL_DIR="${OPENSHIFT_REPO_DIR}/misc/conf"
-

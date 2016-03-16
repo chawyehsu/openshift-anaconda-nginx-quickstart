@@ -38,4 +38,3 @@ function check_nginx() {
 
     install_nginx
 }
-

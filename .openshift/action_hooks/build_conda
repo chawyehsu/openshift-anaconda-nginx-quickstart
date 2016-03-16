@@ -26,4 +26,3 @@ function check_conda() {
     install_conda
     export PATH=${CONDA_DIR}/bin:$PATH
 }
-

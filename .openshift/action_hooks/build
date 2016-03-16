@@ -19,4 +19,3 @@ check_conda
 check_requirements
 # Check ngxin
 check_nginx
-
